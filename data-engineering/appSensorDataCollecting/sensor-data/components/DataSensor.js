@@ -1,17 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, TextInput} from 'react-native';
 import {DeviceMotion} from 'expo-sensors';
 
 
-
-export default class SensorView extends React.Component {
+export default class DataSensor extends React.Component {
     state = {
         acceleration: {},
         accelerationIncludingGravity: {},
         rotation: {},
         rotationRate: {},
         orientation: null,
-        startTime: Math.floor(Date.now())
+
+        startTime: Math.floor(Date.now()),
+        serverUri: 'ws://172.20.10.3:13254',
+        wsConnected: false
     };
 
     componentDidMount() {
@@ -41,10 +43,10 @@ export default class SensorView extends React.Component {
     _subscribe = () => {
         this._subscription = DeviceMotion.addListener((
             {acceleration,
-            accelerationIncludingGravity,
-            rotation,
-            rotationRate,
-            orientation}
+                accelerationIncludingGravity,
+                rotation,
+                rotationRate,
+                orientation}
         ) => {
             this.setState({
                 acceleration,
@@ -53,19 +55,80 @@ export default class SensorView extends React.Component {
                 rotationRate,
                 orientation
             });
+
+            if (this.state.wsConnected) {
+
+                this.ws.send(JSON.stringify({
+                    acceleration,
+                    accelerationIncludingGravity,
+                    rotation,
+                    rotationRate,
+                    orientation
+                }));
+
+            }
         });
     };
+
+    ws = null;
 
     _unsubscribe = () => {
         this._subscription && this._subscription.remove();
         this._subscription = null;
     };
 
+    _btn_connect = () => {
+        if (this.ws !== null && this.state.wsConnected) {
+            this.ws.close();
+        }
+        this.ws = new WebSocket(this.state.serverUri);
 
+        this.ws.onopen = () => {
+            // connection opened
+            this.ws.send('something'); // send a message
+            this.state.wsConnected = true;
+        };
+
+        this.ws.onmessage = (e) => {
+            // a message was received
+            console.log(e.data);
+        };
+
+        this.ws.onerror = (e) => {
+            // an error occurred
+            console.log(e.message);
+        };
+
+        this.ws.onclose = (e) => {
+            // connection closed
+            console.log(e.code, e.reason);
+            this.state.wsConnected = false;
+        };
+    };
 
     render() {
         return (
             <View style={styles.sensor}>
+
+                <View
+                    style={{
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        padding: 2,
+                        margin: 2,
+                    }}>
+                    <TextInput
+                        numberOfLines={1}
+                        // onChangeText={text => onChangeText(text)}
+                        value={this.state.serverUri}
+                    />
+                </View>
+
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={this._btn_connect} style={styles.button}>
+                        <Text>Connect ({this.state.wsConnected ? "connected" : "not connected"}) </Text>
+                    </TouchableOpacity>
+                </View>
 
                 <Text style={styles.textTitle}>Time:</Text>
                 <Text style={styles.text}>
@@ -114,6 +177,7 @@ export default class SensorView extends React.Component {
                         <Text>Fast</Text>
                     </TouchableOpacity>
                 </View>
+
             </View>
         );
     }

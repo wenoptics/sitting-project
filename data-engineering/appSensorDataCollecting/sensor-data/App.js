@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import SensorView from './components/SensorView'
+import DataSensor from './components/DataSensor'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <SensorView/>
+      <DataSensor/>
     </View>
   );
 }
