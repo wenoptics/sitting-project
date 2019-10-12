@@ -1,6 +1,6 @@
-import io
-from multiprocessing import Process
-from threading import Thread
+"""
+Accompany with *phyphox*, get acceleration (with g) streaming and viz
+"""
 
 import requests
 import pandas as pd
@@ -43,7 +43,6 @@ def make_document(doc):
         y=[],
         z=[],
         angle_dev=[]
-
     ))
 
     def get_last():
@@ -138,7 +137,6 @@ def make_document(doc):
     fig_y.xaxis.axis_label = "Time"
     fig_y.yaxis.axis_label = "IEX Real-Time Price"
     fig_y.title.text = "IEX Real Time Price: " + TICKER
-
 
     fig_z = figure(plot_width=800,
                         plot_height=300,
