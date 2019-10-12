@@ -12,7 +12,7 @@ export default class DataSensor extends React.Component {
         orientation: null,
 
         startTime: Math.floor(Date.now()),
-        serverUri: 'ws://192.168.50.56:13254',
+        serverUri: 'ws://172.20.10.3:13254',
         wsConnected: false
     };
 

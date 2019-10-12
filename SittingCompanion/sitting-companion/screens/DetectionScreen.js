@@ -7,12 +7,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
+  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
-import DataSensor from "./DataSensor";
-
 import { MonoText } from '../components/StyledText';
+import SittingSession from "../components/SittingSession";
 
 export default function DetectionScreen() {
   return (
@@ -20,6 +22,31 @@ export default function DetectionScreen() {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
+
+        <View style={{
+          marginTop: 100,
+          justifyContent: 'center',
+        }}>
+          <Text style={{
+            marginBottom: 20,
+            color: 'rgba(0,0,0,1)',
+            fontSize: 37,
+            textAlign: 'center',
+          }}>
+            Ready to sit down?
+          </Text>
+          <Text style={{
+            paddingHorizontal: 30,
+            marginBottom: 20,
+            color: 'rgba(0,0,0,0.6)',
+            fontSize: 17,
+            lineHeight: 19,
+            textAlign: 'center',
+          }}>
+            Fasten your phone the your office chair, and start a monitor session!
+          </Text>
+        </View>
+
         <View style={styles.welcomeContainer}>
           <Image
             source={require('../assets/model_gif/chair_1.gif')}
@@ -27,15 +54,9 @@ export default function DetectionScreen() {
           />
         </View>
 
-        <DataSensor/>
+        <SittingSession/>
 
       </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          Welcome!
-        </Text>
-      </View>
 
     </View>
   );
@@ -81,6 +102,7 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: '#fefcff',
@@ -97,12 +119,12 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 40,
   },
   welcomeImage: {
     width: 300,
-    height: 200,
+    height: 250,
     resizeMode: 'contain',
     marginTop: 40,
     marginLeft: -10,
