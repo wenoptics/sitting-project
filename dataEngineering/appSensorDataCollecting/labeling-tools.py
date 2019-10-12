@@ -238,7 +238,8 @@ def make_document(doc):
                 btn_sit2,
                 btn_sit3,
                 ) )
-        ))
+        )
+    )
 
 
 if __name__ == '__main__':
