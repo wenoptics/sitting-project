@@ -12,7 +12,7 @@ export default class DataSensor extends React.Component {
         orientation: null,
 
         startTime: Math.floor(Date.now()),
-        serverUri: 'ws://172.20.10.3:13254',
+        serverUri: 'ws://192.168.50.145:13254',
         wsConnected: false
     };
 
@@ -59,6 +59,7 @@ export default class DataSensor extends React.Component {
             if (this.state.wsConnected) {
 
                 this.ws.send(JSON.stringify({
+                    "timestamp": Math.floor(Date.now()) - this.state.startTime,
                     acceleration,
                     accelerationIncludingGravity,
                     rotation,
