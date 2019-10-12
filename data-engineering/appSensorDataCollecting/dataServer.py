@@ -1,3 +1,4 @@
+import json
 import logging
 from websocket_server import WebsocketServer
 
@@ -17,7 +18,12 @@ def on_sensor_data_recv(client, server, message):
     :param message:
     :return:
     """
-    print(message)
+    try:
+        data = json.loads(message)
+    except json.decoder.JSONDecodeError:
+        print('raw message:', message)
+    else:
+        print(data)
 
 
 server = WebsocketServer(WS_PORT, host='0.0.0.0', loglevel=logging.INFO)
