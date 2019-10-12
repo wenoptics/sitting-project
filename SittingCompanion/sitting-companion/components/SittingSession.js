@@ -18,6 +18,8 @@ export default class DataSensor extends React.Component {
 
         modalModeSelectShow: false,
         isSessionStarted: false,
+
+        titleText: ""
     };
 
     getDebugView(flag) {
@@ -172,6 +174,7 @@ export default class DataSensor extends React.Component {
             // connection opened
             this.ws.send('something'); // send a message
             this.state.wsConnected = true;
+            this.state.isSessionStarted = true;
         };
 
         this.ws.onmessage = (e) => {
@@ -188,6 +191,7 @@ export default class DataSensor extends React.Component {
             // connection closed
             console.log(e.code, e.reason);
             this.state.wsConnected = false;
+            this.state.isSessionStarted = false;
         };
     };
 
@@ -243,7 +247,10 @@ export default class DataSensor extends React.Component {
 
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity
-                                onPress={()=>{}}
+                                onPress={()=>{
+                                    this.startSession();
+                                    this.state.modalModeSelectShow = false;
+                                }}
                                 style={styles.bigButton}>
                                 <Text style={{fontSize: 20}}> Interactive Guide </Text>
                             </TouchableOpacity>
@@ -251,7 +258,9 @@ export default class DataSensor extends React.Component {
 
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity
-                                onPress={()=>{}}
+                                onPress={()=>{
+                                    this.startSession();
+                                    this.state.modalModeSelectShow = false}}
                                 style={styles.bigButton}>
                                 <Text style={{fontSize: 20}}> Headless Setup </Text>
                             </TouchableOpacity>
